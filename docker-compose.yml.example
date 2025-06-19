@@ -1,0 +1,46 @@
+services:
+  redis:
+    image: redis:latest
+    command:
+      - redis-server
+    env_file:
+      - .env
+    restart: on-failure
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    volumes:
+      - ./redis-data:/data
+
+  postgres:
+    container_name: postgres
+    image: postgres:16.3-alpine
+    env_file:
+      - .env
+    restart: on-failure
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: on-failure
+    ports:
+      - "8888:80"
+    env_file:
+      - .env
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin
+
+  tg_bot:
+    container_name: tg_bot
+    build: .
+    restart: on-failure
+    env_file:
+      - .env
+    command: >
+      bash -c "alembic upgrade head && uv run main.py"
+    depends_on:
+      - postgres
+      - redis
