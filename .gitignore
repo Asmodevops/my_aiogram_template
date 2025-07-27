@@ -10,6 +10,8 @@ wheels/
 pgadmin-data
 postgres-data
 redis-data
+nats-data
+nui-data
 
 # Docker files
 docker-compose.yml

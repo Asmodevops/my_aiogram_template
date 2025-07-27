@@ -1,9 +1,9 @@
-from typing import Optional, Sequence
+from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 
-from app.bot.repository.base import BaseRepository
+from app.infrastructure.database.repository.base import BaseRepository
 from app.infrastructure.database.models.users import User
 
 

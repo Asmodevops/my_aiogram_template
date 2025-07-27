@@ -12,6 +12,7 @@ This is a template for telegram bots written in python using the `aiogram` frame
 * Docker and Docker Compose (containerization);
 * PostgreSQL (database);
 * Redis (cache);
+* NATS + Faststream (queue and FSM storage);
 * Alembic (database migrations with raw SQL).
 
 ### Structure
@@ -44,23 +45,29 @@ This is a template for telegram bots written in python using the `aiogram` frame
 │   │   │   ├── is_admin.py
 │   │   │   ├── repository.py
 │   │   │   ├── session.py
+│   │   │   ├── throttling.py
 │   │   │   └── user.py
-│   │   ├── 📁 repository/
-│   │   │   ├── __init__.py
-│   │   │   ├── base.py
-│   │   │   └── users.py
 │   │   ├── 📁 schemas/
 │   │   │   ├── __init__.py
 │   │   │   └── user.py
 │   │   ├── 📁 services/
-│   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   └── admin_services.py
 │   │   ├── 📁 states/
 │   │   │   └── __init__.py
 │   │   ├── __init__.py
 │   │   └── bot.py
+│   ├── 📁 faststream/
+│   │   ├── 📁 delayed_msg/
+│   │   │   └── router.py
+│   │   └── __init__.py
 │   ├── 📁 infrastructure/
 │   │   ├── 📁 database/
 │   │   │   ├── 📁 models/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── base.py
+│   │   │   │   └── users.py
+│   │   │   ├── 📁 repository/
 │   │   │   │   ├── __init__.py
 │   │   │   │   ├── base.py
 │   │   │   │   └── users.py

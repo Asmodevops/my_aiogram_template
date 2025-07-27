@@ -24,7 +24,7 @@ class ColoredFormatter(logging.Formatter):
         return super().format(record)
 
 
-async def init_logger() -> None:
+def init_logger() -> None:
     """
     Initialize the logger with a console handler and a specific format.
 

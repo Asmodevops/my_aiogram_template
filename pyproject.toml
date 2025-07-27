@@ -10,6 +10,7 @@ dependencies = [
     "alembic>=1.16.1",
     "asyncpg>=0.30.0",
     "environs>=14.2.0",
+    "faststream[nats]>=0.5.48",
     "redis>=6.2.0",
     "sqlalchemy>=2.0.41",
 ]

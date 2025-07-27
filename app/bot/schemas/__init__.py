@@ -1,6 +1,3 @@
-def main():
-    pass
+from .user import UserSchema
 
-
-if __name__ == "__main__":
-    main()
+__all__ = [UserSchema]

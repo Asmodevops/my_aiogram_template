@@ -2,7 +2,7 @@ from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject, User
 from typing import Callable, Dict, Any, Awaitable
 
-from app.bot.repository.users import UserRepository
+from app.infrastructure.database.repository import UserRepository
 
 
 class UserSaverMiddleware(BaseMiddleware):

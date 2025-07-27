@@ -152,6 +152,20 @@ wheels = [
 ]
 
 [[package]]
+name = "anyio"
+version = "4.9.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "idna" },
+    { name = "sniffio" },
+    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/95/7d/4c1bd541d4dffa1b52bd83fb8527089e097a106fc90b467a7313b105f840/anyio-4.9.0.tar.gz", hash = "sha256:673c0c244e15788651a4ff38710fea9675823028a6f08a5eda409e0c9840a028", size = 190949, upload-time = "2025-03-17T00:02:54.77Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a1/ee/48ca1a7c89ffec8b6a0c5d02b89c305671d5ffd8d3c94acf8b8c408575bb/anyio-4.9.0-py3-none-any.whl", hash = "sha256:9f76d541cad6e36af7beb62e978876f3b41e3e04f2c1fbf0884604c0a9c4d93c", size = 100916, upload-time = "2025-03-17T00:02:52.713Z" },
+]
+
+[[package]]
 name = "async-timeout"
 version = "5.0.1"
 source = { registry = "https://pypi.org/simple" }
@@ -230,6 +244,38 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/2e/eb/805549ab44db6a9a8206973e8283b49734b903f85d3fed549db78b0817fc/environs-14.2.0.tar.gz", hash = "sha256:2b6c78a77dfefb57ca30d43a232270ecc82adabf67ab318e018084b9a3529e9b", size = 32317, upload-time = "2025-05-22T19:25:01.614Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5b/75/e309b90c6f95a6e01aa86425ff567d3c634eea33bde915f3ceb910092461/environs-14.2.0-py3-none-any.whl", hash = "sha256:22669a58d53c5b86a25d0231c4a41a6ebeb82d3942b8fbd9cf645890c92a1843", size = 15733, upload-time = "2025-05-22T19:24:59.666Z" },
+]
+
+[[package]]
+name = "fast-depends"
+version = "2.4.12"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/85/f5/8b42b7588a67ad78991e5e7ca0e0c6a1ded535a69a725e4e48d3346a20c1/fast_depends-2.4.12.tar.gz", hash = "sha256:9393e6de827f7afa0141e54fa9553b737396aaf06bd0040e159d1f790487b16d", size = 16682, upload-time = "2024-10-16T17:44:35.963Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1d/08/4adb160d8394053289fdf3b276e93b53271fd463e54fff8911b23c1db4ed/fast_depends-2.4.12-py3-none-any.whl", hash = "sha256:9e5d110ddc962329e46c9b35e5fe65655984247a13ee3ca5a33186db7d2d75c2", size = 17651, upload-time = "2024-10-16T17:44:34.759Z" },
+]
+
+[[package]]
+name = "faststream"
+version = "0.5.48"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "fast-depends" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9e/05/5edd840d3b5bfa1713985665b11c0ba9e918bc84539a69e8888b8485f48c/faststream-0.5.48.tar.gz", hash = "sha256:b7082552e626afd832410752da5d26714f893148fd9f3d2ce431117b3ba5cdb1", size = 303368, upload-time = "2025-07-21T18:53:29.522Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/89/cc/0d558289e944b8708add28e7e532a7bf7ad41639866e7635ab54fe4a7992/faststream-0.5.48-py3-none-any.whl", hash = "sha256:ee48956405019f82847ba5e1ef5a90ad648338d86bcc377eb8938edd1615c928", size = 404492, upload-time = "2025-07-21T18:53:27.727Z" },
+]
+
+[package.optional-dependencies]
+nats = [
+    { name = "nats-py" },
 ]
 
 [[package]]
@@ -528,6 +574,12 @@ wheels = [
 ]
 
 [[package]]
+name = "nats-py"
+version = "2.11.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/65/be/757c8af63596453daaa42cc21be51aa42fc6b23cc9d4347784f99c8357b5/nats_py-2.11.0.tar.gz", hash = "sha256:fb1097db8b520bb4c8f5ad51340ca54d9fa54dbfc4ecc81c3625ef80994b6100", size = 114186, upload-time = "2025-07-22T08:41:08.589Z" }
+
+[[package]]
 name = "presentation-bot"
 version = "0.1.0"
 source = { virtual = "." }
@@ -537,6 +589,7 @@ dependencies = [
     { name = "alembic" },
     { name = "asyncpg" },
     { name = "environs" },
+    { name = "faststream", extra = ["nats"] },
     { name = "redis" },
     { name = "sqlalchemy" },
 ]
@@ -548,6 +601,7 @@ requires-dist = [
     { name = "alembic", specifier = ">=1.16.1" },
     { name = "asyncpg", specifier = ">=0.30.0" },
     { name = "environs", specifier = ">=14.2.0" },
+    { name = "faststream", extras = ["nats"], specifier = ">=0.5.48" },
     { name = "redis", specifier = ">=6.2.0" },
     { name = "sqlalchemy", specifier = ">=2.0.41" },
 ]
@@ -724,6 +778,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ea/9a/0551e01ba52b944f97480721656578c8a7c46b51b99d66814f85fe3a4f3e/redis-6.2.0.tar.gz", hash = "sha256:e821f129b75dde6cb99dd35e5c76e8c49512a5a0d8dfdc560b2fbd44b85ca977", size = 4639129, upload-time = "2025-05-28T05:01:18.91Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/13/67/e60968d3b0e077495a8fee89cf3f2373db98e528288a48f1ee44967f6e8c/redis-6.2.0-py3-none-any.whl", hash = "sha256:c8ddf316ee0aab65f04a11229e94a64b2618451dab7a67cb2f77eb799d872d5e", size = 278659, upload-time = "2025-05-28T05:01:16.955Z" },
+]
+
+[[package]]
+name = "sniffio"
+version = "1.3.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/87/a6771e1546d97e7e041b6ae58d80074f81b7d5121207425c964ddf5cfdbd/sniffio-1.3.1.tar.gz", hash = "sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc", size = 20372, upload-time = "2024-02-25T23:20:04.057Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e9/44/75a9c9421471a6c4805dbf2356f7c181a29c1879239abab1ea2cc8f38b40/sniffio-1.3.1-py3-none-any.whl", hash = "sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2", size = 10235, upload-time = "2024-02-25T23:20:01.196Z" },
 ]
 
 [[package]]

@@ -3,7 +3,7 @@ from typing import Any, Awaitable, Callable, Dict
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 
-from app.bot.repository.users import UserRepository
+from app.infrastructure.database.repository import init_repositories
 
 
 class RepositoryMiddleware(BaseMiddleware):
@@ -14,7 +14,5 @@ class RepositoryMiddleware(BaseMiddleware):
         data: Dict[str, Any],
     ) -> Any:
         session = data.get("session")
-
-        data["user_repo"] = UserRepository(session)
-
+        data.update(init_repositories(session))
         return await handler(event, data)
