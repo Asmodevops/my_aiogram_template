@@ -18,4 +18,4 @@ class IsAdminMiddleware(BaseMiddleware):
         if user is not None:
             if user.id == config.basic_ids.admin_id:
                 return await handler(event, data)
-        return
+        return None

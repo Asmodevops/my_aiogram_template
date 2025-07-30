@@ -13,4 +13,9 @@ dependencies = [
     "faststream[nats]>=0.5.48",
     "redis>=6.2.0",
     "sqlalchemy>=2.0.41",
+    "taskiq-aiogram>=0.3.1",
+    "taskiq-faststream>=0.2.3",
+    "taskiq-nats>=0.5.1",
+    "taskiq-redis>=1.1.0",
+    "taskiq[faststream,nats]>=0.11.18",
 ]

@@ -1,14 +1,6 @@
-from aiogram import Bot
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
-
-from .config_reader import Config
+from .config_reader import Config, config
 from .loggers import init_logger
 
-config: Config = Config.load_config()
-bot = Bot(
-    token=config.tg_bot.token.get_secret_value(),
-    default=DefaultBotProperties(parse_mode=ParseMode.HTML),
-)
+init_logger()
 
-__all__ = [bot, config, init_logger]
+__all__ = ["config", "Config"]

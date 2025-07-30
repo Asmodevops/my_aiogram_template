@@ -87,3 +87,5 @@ class Config(BaseModel):
                 durable=env.str("DELAYED_CONSUMER_DURABLE_NAME"),
             )
         )
+
+config: Config = Config.load_config()

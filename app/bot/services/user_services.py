@@ -7,9 +7,9 @@ class UserServices:
     def __init__(self, user_repo):
         self.user_repo = user_repo
 
-    async def get_validated_user_by_id(self, user_id: int):
-        raw_user = await self.user_repo.get_by_id(
-            id=user_id, return_fields=["telegram_id", "full_name", "username"]
+    async def get_validated_user_by_telegram_id(self, telegram_id: int):
+        raw_user = await self.user_repo.get_by_telegram_id(
+            telegram_id=telegram_id, return_fields=["telegram_id", "full_name", "username"]
         )
 
         if not raw_user:
