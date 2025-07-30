@@ -4,6 +4,7 @@ from aiogram import Bot
 from taskiq import TaskiqDepends
 
 from app.services.scheduler.taskiq_broker import taskiq_broker
+from app.services.scheduler.taskiq_lexicon import taskiq_lexicon
 from config import config
 
 
@@ -11,7 +12,7 @@ from config import config
 async def simple_task(bot: Bot = TaskiqDepends()):
     await bot.send_message(
         chat_id=config.basic_ids.admin_id,
-        text="Это простая задача без расписания"
+        text=taskiq_lexicon.simple_task
     )
 
 
@@ -19,7 +20,9 @@ async def simple_task(bot: Bot = TaskiqDepends()):
 async def periodic_task(bot: Bot = TaskiqDepends()):
     await bot.send_message(
         chat_id=config.basic_ids.admin_id,
-        text=f"{time.strftime('%H:%M:%S', time.localtime(time.time()))}: Это периодическая задача, выполняющаяся раз в минуту"
+        text=taskiq_lexicon.periodic_task.format(
+            time=time.strftime('%H:%M:%S', time.localtime(time.time()))
+        )
     )
 
 
@@ -27,7 +30,9 @@ async def periodic_task(bot: Bot = TaskiqDepends()):
 async def dynamic_periodic_task(bot: Bot = TaskiqDepends()):
     await bot.send_message(
         chat_id=config.basic_ids.admin_id,
-        text=f"{time.strftime('%H:%M:%S', time.localtime(time.time()))}: Это динамически запланированная периодическая задача"
+        text=taskiq_lexicon.dynamic_periodic_task.format(
+            time=time.strftime('%H:%M:%S', time.localtime(time.time()))
+        )
     )
 
 
@@ -35,5 +40,7 @@ async def dynamic_periodic_task(bot: Bot = TaskiqDepends()):
 async def scheduled_task(bot: Bot = TaskiqDepends()):
     await bot.send_message(
         chat_id=config.basic_ids.admin_id,
-        text=f"{time.strftime('%H:%M:%S', time.localtime(time.time()))}: Это запланированная разовая задача"
+        text=taskiq_lexicon.scheduled_task.format(
+            time=time.strftime('%H:%M:%S', time.localtime(time.time()))
+        )
     )

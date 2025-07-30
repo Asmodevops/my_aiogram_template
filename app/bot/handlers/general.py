@@ -10,7 +10,8 @@ from taskiq import ScheduledTask
 from taskiq_redis import RedisScheduleSource
 
 from app.bot.enums import Action
-from app.bot.services.admin_services import UserServices
+from app.bot.lexicon import lexicon
+from app.bot.services.user_services import UserServices
 from app.infrastructure.database.repository import UserRepository
 from app.services.scheduler import dynamic_periodic_task, scheduled_task, simple_task
 from config import Config
@@ -20,7 +21,9 @@ router = Router(name="general router")
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
-    await message.answer("Привет! Это шаблон Telegram бота от asmodev.")
+    await message.answer(
+        text=lexicon.start
+    )
 
 
 @router.message(Command(commands=["test"]))
@@ -33,15 +36,16 @@ async def cmd_test(
     user_services = UserServices(user_repo)
     user = await user_services.get_validated_user_by_telegram_id(telegram_id=message.from_user.id)
     await message.answer(
-        f"Сообщение с вашими данными придет через 5 секунд..."
+        text=lexicon.test
     )
     if not broker.running:
         await asyncio.sleep(5)
         await message.answer(
-            f"User info:\n"
-            f"ID: {user.telegram_id}\n"
-            f"Name: {user.full_name}\n"
-            f"Username: @{user.username}"
+            text=lexicon.user_info.format(
+                telegram_id=user.telegram_id,
+                full_name=user.full_name,
+                username=user.username
+            )
         )
         return
 
@@ -54,7 +58,7 @@ async def cmd_test(
     }
     await broker.publish(
         message=msg_data,
-        subject=config.delayed_consumer.subject,
+        subject=config.delayed_consumer.subject.replace('*', str(message.from_user.id)),
         stream=config.delayed_consumer.stream
     )
 
@@ -67,7 +71,7 @@ async def cmd_test(
         bot: Bot
 ):
     msg: Message = await message.answer(
-        f"Это сообщение удалится через 3 секунды" + " брокером сообщений" if broker.running else ""
+        text=lexicon.del_
     )
     if not broker.running:
         await asyncio.sleep(3)
@@ -86,7 +90,7 @@ async def cmd_test(
     }
     await broker.publish(
         message=msg_data,
-        subject=config.delayed_consumer.subject,
+        subject=config.delayed_consumer.subject.replace('*', str(message.from_user.id)),
         stream=config.delayed_consumer.stream
     )
 
@@ -98,7 +102,7 @@ async def task_handler(
 ) -> None:
     await simple_task.kiq()
     await message.answer(
-        text="Простая задача"
+        text=lexicon.simple
     )
 
 
@@ -109,7 +113,7 @@ async def dynamic_periodic_task_handler(
         redis_source: RedisScheduleSource,
 ) -> None:
     periodic_task: ScheduledTask = await dynamic_periodic_task.schedule_by_cron(
-        source=redis_source, cron="* * * * *"
+        source=redis_source, cron="*/2 * * * *"
     )
 
     data: dict = await state.get_data()
@@ -119,7 +123,9 @@ async def dynamic_periodic_task_handler(
     data["periodic_tasks"].append(periodic_task.schedule_id)
 
     await state.set_data(data)
-    await message.answer(text="Периодическая задача запланирована")
+    await message.answer(
+        text=lexicon.periodic
+    )
 
 
 @router.message(Command("del_periodic"))
@@ -130,11 +136,15 @@ async def delete_all_periodic_tasks_handler(
 ) -> None:
     data = await state.get_data()
     if data.get("periodic_tasks") is None:
-        await message.answer(text="Нет периодических запланированных задач")
+        await message.answer(
+            text=lexicon.no_periodic
+        )
     else:
         for task_id in data.get("periodic_tasks"):
             await redis_source.delete_schedule(task_id)
-        await message.answer(text="Периодическая задача удалена")
+        await message.answer(
+            text=lexicon.del_periodic
+        )
 
 
 @router.message(Command("delay"))
@@ -145,4 +155,15 @@ async def delay_task_handler(
     await scheduled_task.schedule_by_time(
         source=redis_source, time=datetime.now(timezone.utc) + timedelta(seconds=5)
     )
-    await message.answer("Разовая задача запланирована")
+    await message.answer(
+        text=lexicon.delay
+    )
+
+
+@router.message(Command("help"))
+async def process_help_command(
+    message: Message,
+) -> None:
+    await message.answer(
+        text=lexicon.help
+    )

@@ -17,6 +17,6 @@ class ThrottlingMiddleware(BaseMiddleware):
     ) -> Any:
         user: User = data.get("event_from_user")
         if user.id in self.cache:
-            return
+            return None
         self.cache[user.id] = None
         return await handler(event, data)
