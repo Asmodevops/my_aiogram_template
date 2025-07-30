@@ -13,7 +13,7 @@ This is a template for telegram bots written in python using the `aiogram` frame
 * Docker and Docker Compose (containerization);
 * PostgreSQL (database);
 * Redis (cache, taskiq result backend and FSM storage);
-* NATS + Faststream (queue and FSM storage);
+* NATS + Faststream (queue);
 * Alembic (database migrations with raw SQL).
 
 ### Structure
