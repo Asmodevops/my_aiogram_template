@@ -57,7 +57,7 @@ async def cmd_test(
 
 
 @router.message(Command(commands=["del"]))
-async def cmd_test(
+async def cmd_del(
         message: Message,
         broker: NatsBroker,
         publisher: Publisher,

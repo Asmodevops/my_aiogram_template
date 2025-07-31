@@ -45,6 +45,7 @@ This is a template for telegram bots written in python using the `aiogram` frame
 │   │   ├── 📁 middlewares/
 │   │   │   ├── __init__.py
 │   │   │   ├── is_admin.py
+│   │   │   ├── publisher.py
 │   │   │   ├── repository.py
 │   │   │   ├── session.py
 │   │   │   ├── throttling.py
@@ -62,7 +63,7 @@ This is a template for telegram bots written in python using the `aiogram` frame
 │   ├── 📁 core/
 │   │   ├── __init__.py
 │   │   ├── bot.py
-│   │   ├── dispatcher.py
+│   │   ├── db.py
 │   │   ├── faststream.py
 │   │   └── storage.py
 │   ├── 📁 enums/
@@ -151,11 +152,11 @@ alembic upgrade head
 
 10. If you want to use the Taskiq broker for background tasks as well as the Taskiq scheduler, add your tasks to the `tasks.py` module and start the worker first:
 ```bash
-taskiq worker app.services.scheduler.taskiq_broker:taskiq_broker -fsd --no-configure-logging
+taskiq worker app.services.scheduler:taskiq_broker -fsd --no-configure-logging --workers 1
 ```
 and then the scheduler:
 ```bash
-taskiq scheduler app.services.scheduler.taskiq_broker:scheduler --no-configure-logging
+taskiq scheduler app.services.scheduler:scheduler --no-configure-logging
 ```
 
 11. Run main.py to check the functionality of the template.

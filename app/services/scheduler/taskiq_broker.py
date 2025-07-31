@@ -25,6 +25,6 @@ scheduler = TaskiqScheduler(taskiq_broker, [redis_source, LabelScheduleSource(ta
 
 taskiq_aiogram.init(
     taskiq_broker,
-    "app.core.dispatcher:dp",
-    "app.core.bot:bot"
+    "app.core:dp",
+    "app.core:bot"
 )
