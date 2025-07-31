@@ -9,12 +9,11 @@ from faststream.nats import NatsBroker
 from taskiq import ScheduledTask
 from taskiq_redis import RedisScheduleSource
 
-from app.bot.enums import Action
 from app.bot.lexicon import lexicon
 from app.bot.services.user_services import UserServices
 from app.infrastructure.database.repository import UserRepository
+from app.services.faststream.delayed_msg.publisher import Publisher
 from app.services.scheduler import dynamic_periodic_task, scheduled_task, simple_task
-from config import Config
 
 router = Router(name="general router")
 
@@ -31,7 +30,7 @@ async def cmd_test(
         message: Message,
         user_repo: UserRepository,
         broker: NatsBroker,
-        config: Config
+        publisher: Publisher
 ):
     user_services = UserServices(user_repo)
     user = await user_services.get_validated_user_by_telegram_id(telegram_id=message.from_user.id)
@@ -50,16 +49,10 @@ async def cmd_test(
         return
 
     delay = 5
-    msg_data = {
-        'action_type': Action.POST,
-        'delayed_msg_timestamp': datetime.now() + timedelta(seconds=delay),
-        'msg': f"User info:\nID: {user.telegram_id}\nName: {user.full_name}\nUsername: @{user.username}",
-        'chat_id': message.chat.id
-    }
-    await broker.publish(
-        message=msg_data,
-        subject=config.delayed_consumer.subject.replace('*', str(message.from_user.id)),
-        stream=config.delayed_consumer.stream
+    await publisher.delayed_send_message(
+        message=f"User info:\nID: {user.telegram_id}\nName: {user.full_name}\nUsername: @{user.username}",
+        chat_id=message.chat.id,
+        time_to_action=datetime.now() + timedelta(seconds=delay),
     )
 
 
@@ -67,7 +60,7 @@ async def cmd_test(
 async def cmd_test(
         message: Message,
         broker: NatsBroker,
-        config: Config,
+        publisher: Publisher,
         bot: Bot
 ):
     msg: Message = await message.answer(
@@ -82,23 +75,16 @@ async def cmd_test(
         return
 
     delay = 3
-    msg_data = {
-        'action_type': Action.DELETE,
-        'delayed_msg_timestamp': datetime.now() + timedelta(seconds=delay),
-        'msg_id': msg.message_id,
-        'chat_id': message.chat.id
-    }
-    await broker.publish(
-        message=msg_data,
-        subject=config.delayed_consumer.subject.replace('*', str(message.from_user.id)),
-        stream=config.delayed_consumer.stream
+    await publisher.delayed_delete_message(
+        message_id=msg.message_id,
+        chat_id=msg.chat.id,
+        time_to_action=datetime.now() + timedelta(seconds=delay)
     )
 
 
 @router.message(Command("simple"))
 async def task_handler(
-        message: Message,
-        redis_source: RedisScheduleSource
+        message: Message
 ) -> None:
     await simple_task.kiq()
     await message.answer(
@@ -162,7 +148,7 @@ async def delay_task_handler(
 
 @router.message(Command("help"))
 async def process_help_command(
-    message: Message,
+        message: Message,
 ) -> None:
     await message.answer(
         text=lexicon.help
