@@ -7,11 +7,11 @@ wheels/
 *.egg-info
 
 # Data Path
-pgadmin-data
-postgres-data
-redis-data
-nats-data
-nui-data
+/pgadmin-data
+/postgres-data
+/redis-data
+/nats
+/nui-data
 
 # Docker files
 docker-compose.yml

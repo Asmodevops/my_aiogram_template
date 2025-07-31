@@ -5,10 +5,10 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-RUN pip install uv==0.7.6
+RUN pip install uv
 
-COPY uv.lock pyproject.toml /app/
+COPY requirements.txt .
 
-RUN uv sync
+RUN pip install --no-cache -r /app/requirements.txt
 
 COPY . /app

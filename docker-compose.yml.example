@@ -35,8 +35,6 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    volumes:
-      - ./pgadmin-data:/var/lib/pgadmin
     ports:
       - "${PGADMIN_PORT}:80"
     restart: unless-stopped
@@ -75,6 +73,8 @@ services:
         max-size: "10m"
         max-file: "5"
         compress: "true"
+    networks:
+      - app_network
 
   nats:
     image: nats:latest
@@ -86,7 +86,7 @@ services:
       - "${NATS_MONITORING_PORT}:8222"
     volumes:
       - ./nats/nats-data:/data
-      - ./nats/config/server.conf:/config/server.conf
+      - ./config/nats/server.conf:/config/server.conf
     healthcheck:
       test: ["CMD", "nats-server", "-sl"]
       interval: 5s
@@ -126,13 +126,13 @@ services:
         condition: service_healthy
 
   tg_bot:
-    container_name: tg_bot
+    &bot
     build: .
     restart: on-failure
     env_file:
       - .env
     command: >
-      bash -c "alembic upgrade head && uv run main.py"
+      bash -c "alembic upgrade head && python main.py"
     depends_on:
       - postgres
       - redis
@@ -143,6 +143,21 @@ services:
         max-size: "10m"
         max-file: "3"
         compress: "true"
+    networks:
+      - app_network
+
+  taskiq-worker:
+    <<: *bot
+    ports: []
+    command: >
+      bash -c "taskiq worker app.services.scheduler.taskiq_broker:taskiq_broker -fsd --no-configure-logging"
+
+  taskiq-scheduler:
+    <<: *bot
+    ports: []
+    command: >
+      bash -c "taskiq scheduler app.services.scheduler.taskiq_broker:scheduler -fsd --no-configure-logging"
+
 
 networks:
   app_network:

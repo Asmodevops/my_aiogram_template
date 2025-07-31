@@ -29,9 +29,6 @@ This is a template for telegram bots written in python using the `aiogram` frame
 │   ├── 📁 bot/
 │   │   ├── 📁 dialogs/
 │   │   │   └── __init__.py
-│   │   ├── 📁 enums/
-│   │   │   ├── __init__.py
-│   │   │   └── actions.py
 │   │   ├── 📁 filters/
 │   │   │   └── __init__.py
 │   │   ├── 📁 handlers/
@@ -65,8 +62,12 @@ This is a template for telegram bots written in python using the `aiogram` frame
 │   ├── 📁 core/
 │   │   ├── __init__.py
 │   │   ├── bot.py
+│   │   ├── dispatcher.py
 │   │   ├── faststream.py
 │   │   └── storage.py
+│   ├── 📁 enums/
+│   │   ├── __init__.py
+│   │   └── actions.py
 │   ├── 📁 infrastructure/
 │   │   ├── 📁 database/
 │   │   │   ├── 📁 models/
@@ -80,6 +81,7 @@ This is a template for telegram bots written in python using the `aiogram` frame
 │   ├── 📁 services/
 │   │   ├── 📁 faststream/
 │   │   │   ├── 📁 delayed_msg/
+│   │   │   │   ├── publisher.py
 │   │   │   │   └── router.py
 │   │   └── __init__.py
 │   ├── 📁 scheduler/
@@ -88,12 +90,11 @@ This is a template for telegram bots written in python using the `aiogram` frame
 │   │   ├── taskiq_lexicon.py
 │   │   └── tasks.py
 ├── 📁 config/
+│   ├── 📁 nats/
+│   │   └── server.conf
 │   ├── __init__.py
 │   ├── config_reader.py
 │   └── loggers.py
-├── 📁 nats/
-│   └── 📁 config/
-│   │   └── server.conf
 ├── .env
 ├── .env.example
 ├── .gitignore
@@ -106,6 +107,7 @@ This is a template for telegram bots written in python using the `aiogram` frame
 ├── docker-compose.yml
 ├── main.py
 ├── pyproject.toml
+├── requirements.txt
 └── uv.lock
 ```
 

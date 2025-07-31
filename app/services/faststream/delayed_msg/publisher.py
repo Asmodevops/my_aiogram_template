@@ -3,7 +3,7 @@ from typing import Any
 
 from faststream.nats import NatsBroker
 
-from app.bot.enums import Action
+from app.enums import Action
 
 
 class Publisher:

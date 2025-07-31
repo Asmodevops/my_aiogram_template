@@ -12,7 +12,7 @@ from taskiq_redis import RedisScheduleSource
 from app.bot.lexicon import lexicon
 from app.bot.services.user_services import UserServices
 from app.infrastructure.database.repository import UserRepository
-from app.services.faststream.delayed_msg.publisher import Publisher
+from app.services.faststream import Publisher
 from app.services.scheduler import dynamic_periodic_task, scheduled_task, simple_task
 
 router = Router(name="general router")
