@@ -13,17 +13,11 @@ from app.bot.middlewares import (
     PublisherMiddleware,
     RepositoryMiddleware,
     ThrottlingMiddleware,
-    UserSaverMiddleware
+    UserSaverMiddleware,
 )
-from app.core import (
-    bot,
-    broker,
-    dp,
-    session_maker,
-    storage
-)
+from app.core import bot, broker, dp, session_maker, storage
 from app.services.faststream import get_stream_routers
-from app.services.scheduler import taskiq_broker, redis_source
+from app.services.scheduler import redis_source, taskiq_broker
 from config import config
 
 logger = logging.getLogger(__name__)

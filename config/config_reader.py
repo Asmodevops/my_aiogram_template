@@ -1,5 +1,5 @@
 from environs import Env
-from pydantic import BaseModel, SecretStr, PostgresDsn, NatsDsn
+from pydantic import BaseModel, NatsDsn, PostgresDsn, SecretStr
 
 
 class TgBot(BaseModel):

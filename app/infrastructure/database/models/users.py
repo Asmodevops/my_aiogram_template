@@ -1,6 +1,5 @@
-from typing import Optional
 
-from sqlalchemy import Integer, String, BigInteger
+from sqlalchemy import BigInteger, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.infrastructure.database.models.base import Base
@@ -14,8 +13,8 @@ class User(Base):
         BigInteger, unique=True, index=True, nullable=False
     )
     first_name: Mapped[str] = mapped_column(String, nullable=False)
-    last_name: Mapped[Optional[str]] = mapped_column(
+    last_name: Mapped[str | None] = mapped_column(
         String, nullable=True, default=None
     )
     full_name: Mapped[str] = mapped_column(String, nullable=False)
-    username: Mapped[Optional[str]] = mapped_column(String, nullable=True, default=None)
+    username: Mapped[str | None] = mapped_column(String, nullable=True, default=None)

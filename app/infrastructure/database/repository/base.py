@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Type, TypeVar, Generic, Optional, Any, Dict, List
+from typing import Any, Generic, TypeVar
 
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
@@ -8,7 +8,7 @@ T = TypeVar("T")
 
 
 class BaseRepository(ABC, Generic[T]):
-    def __init__(self, session, model: Type[T]):
+    def __init__(self, session, model: type[T]):
         self.session = session
         self.model = model
 
@@ -20,8 +20,8 @@ class BaseRepository(ABC, Generic[T]):
             raise ValueError(f"Database error: {e}") from e
 
     async def get_by_id(
-        self, id: int, return_fields: Optional[List[str]]
-    ) -> Optional[Dict[str, Any]]:
+        self, id: int, return_fields: list[str] | None
+    ) -> dict[str, Any] | None:
         columns = [getattr(self.model, field) for field in return_fields]
         stmt = select(*columns).where(self.model.id == id)
         result = await self.session.execute(stmt)

@@ -1,8 +1,8 @@
 import asyncio
-from datetime import datetime, timezone, timedelta
+from datetime import UTC, datetime, timedelta
 
-from aiogram import Router, Bot
-from aiogram.filters import CommandStart, Command
+from aiogram import Bot, Router
+from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from faststream.nats import NatsBroker
@@ -139,7 +139,7 @@ async def delay_task_handler(
         redis_source: RedisScheduleSource
 ) -> None:
     await scheduled_task.schedule_by_time(
-        source=redis_source, time=datetime.now(timezone.utc) + timedelta(seconds=5)
+        source=redis_source, time=datetime.now(UTC) + timedelta(seconds=5)
     )
     await message.answer(
         text=lexicon.delay

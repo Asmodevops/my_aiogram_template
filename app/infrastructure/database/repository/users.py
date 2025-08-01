@@ -1,4 +1,4 @@
-from typing import Optional, List, Dict, Any
+from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
@@ -41,8 +41,8 @@ class UserRepository(BaseRepository[User]):
     async def get_by_telegram_id(
             self,
             telegram_id: int,
-            return_fields: Optional[List[str]]
-    ) -> Optional[Dict[str, Any]]:
+            return_fields: list[str] | None
+    ) -> dict[str, Any] | None:
         columns = [getattr(User, field) for field in return_fields]
         stmt = select(*columns).where(User.telegram_id == telegram_id)
         result = await self.session.execute(stmt)
