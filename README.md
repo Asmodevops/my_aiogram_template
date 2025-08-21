@@ -108,7 +108,6 @@ This is a template for telegram bots written in python using the `aiogram` frame
 ├── docker-compose.yml
 ├── main.py
 ├── pyproject.toml
-├── requirements.txt
 └── uv.lock
 ```
 
@@ -141,22 +140,22 @@ uv sync
 
 8. If required, create additional empty migrations with the command:
 ```bash
-alembic revision
+uv run alembic revision
 ```
 and fill them with SQL code.
 
 9. Apply database migrations using the command:
 ```bash
-alembic upgrade head 
+uv run alembic upgrade head 
 ```
 
 10. If you want to use the Taskiq broker for background tasks as well as the Taskiq scheduler, add your tasks to the `tasks.py` module and start the worker first:
 ```bash
-taskiq worker app.services.scheduler:taskiq_broker -fsd --no-configure-logging --workers 1
+uv run taskiq worker app.services.scheduler:taskiq_broker -fsd --no-configure-logging --workers 1
 ```
 and then the scheduler:
 ```bash
-taskiq scheduler app.services.scheduler:scheduler --no-configure-logging
+uv run taskiq scheduler app.services.scheduler:scheduler --no-configure-logging
 ```
 
 11. Run main.py to check the functionality of the template.

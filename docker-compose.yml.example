@@ -132,7 +132,7 @@ services:
     env_file:
       - .env
     command: >
-      bash -c "alembic upgrade head && python main.py"
+      bash -c "uv run alembic upgrade head && uv run main.py"
     depends_on:
       - postgres
       - redis
@@ -150,13 +150,13 @@ services:
     <<: *bot
     ports: []
     command: >
-      bash -c "taskiq worker app.services.scheduler.taskiq_broker:taskiq_broker -fsd --no-configure-logging"
+      bash -c "uv run taskiq worker app.services.scheduler.taskiq_broker:taskiq_broker -fsd --no-configure-logging"
 
   taskiq-scheduler:
     <<: *bot
     ports: []
     command: >
-      bash -c "taskiq scheduler app.services.scheduler.taskiq_broker:scheduler -fsd --no-configure-logging"
+      bash -c "uv run taskiq scheduler app.services.scheduler.taskiq_broker:scheduler -fsd --no-configure-logging"
 
 
 networks:
